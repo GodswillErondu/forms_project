@@ -35,23 +35,41 @@ class FormObject {
     required this.questions,
   });
 
-  factory FormObject.empty() => FormObject(
-    id: '',
-    author: '',
-    to: [],
-    title: '',
-    subtitle: '',
-    description: '',
-    dateCreated: DateTime.now(),
-    dateModified: DateTime.now(),
-    isPublished: false,
-    thumbnailUrl: '',
-    themeColorHex: '0x00FFFFFF',
-    backgroundColorHex: '0xFFFFFFFF',
-    titleColorHex: '0xFF000000',
-    questions: [],
-  );
-
+  FormObject copyWith({
+    String? id,
+    String? author,
+    List<String>? to,
+    String? title,
+    String? subtitle,
+    String? description,
+    DateTime? dateCreated,
+    DateTime? dateModified,
+    bool? isPublished,
+    String? thumbnailUrl,
+    String? themeColorHex,
+    String? backgroundColorHex,
+    String? titleColorHex,
+    int? maxQuestionsToAnswer,
+    List<FormQuestionObject>? questions,
+  }) {
+    return FormObject(
+      id: id ?? this.id,
+      author: author ?? this.author,
+      to: to ?? List.from(this.to),
+      title: title ?? this.title,
+      subtitle: subtitle ?? this.subtitle,
+      description: description ?? this.description,
+      dateCreated: dateCreated ?? this.dateCreated,
+      dateModified: dateModified ?? this.dateModified,
+      isPublished: isPublished ?? this.isPublished,
+      thumbnailUrl: thumbnailUrl ?? this.thumbnailUrl,
+      themeColorHex: themeColorHex ?? this.themeColorHex,
+      backgroundColorHex: backgroundColorHex ?? this.backgroundColorHex,
+      titleColorHex: titleColorHex ?? this.titleColorHex,
+      maxQuestionsToAnswer: maxQuestionsToAnswer ?? this.maxQuestionsToAnswer,
+      questions: questions ?? List.from(this.questions),
+    );
+  }
 
 
   @override
@@ -77,4 +95,6 @@ class FormObject {
     if (identical(other, this)) return true;
     return other is FormObject && other.hashCode == hashCode;
   }
+
+
 }
