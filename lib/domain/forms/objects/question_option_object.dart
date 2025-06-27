@@ -1,3 +1,5 @@
+import 'package:forms_project/domain/forms/objects/form_question_object.dart';
+
 class QuestionOptionObject {
   final String id;
   final int order;
@@ -14,4 +16,23 @@ class QuestionOptionObject {
     this.fileUrl,
     this.mimeType,
   });
+  
+  QuestionOptionObject copyWith({
+     String? id,
+     int? order,
+     String? title,
+     String? description,
+     String? fileUrl,
+     String? mimeType,
+}) {
+    return QuestionOptionObject(
+        id: id ?? this.id,
+        order: order ?? this.order,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      fileUrl: fileUrl ?? this.fileUrl,
+      mimeType: mimeType ?? this.mimeType,
+    );
+  }
+  
 }

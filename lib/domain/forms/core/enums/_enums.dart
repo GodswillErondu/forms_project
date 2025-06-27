@@ -1,4 +1,4 @@
-enum FormInputType {
+enum FormInputTypeEnum {
   shortText,
   longText,
   number,
