@@ -1,4 +1,4 @@
-import 'package:forms_project/domain/forms/core/enums/_enums.dart';
+import 'package:forms_project/domain/core/_enums.dart';
 import 'package:forms_project/domain/forms/objects/question_option_object.dart';
 
 class FormQuestionObject {
