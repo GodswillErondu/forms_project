@@ -1,11 +1,19 @@
 
 
 import 'package:dartz/dartz.dart';
+import 'package:forms_project/domain/core/errors.dart';
 import 'package:forms_project/domain/core/failures.dart';
 
 abstract class ValueObject<T> {
   const ValueObject();
-  Either<Failure<T>, T> get value;
+  Either<ValueFailure<T>, T> get value;
+
+  T getOrCrash() => value.fold(
+        (f) => throw UnexpectedValueError(f),
+    id,
+  );
+
+  bool isValid() => value.isRight();
 
   @override
   bool operator ==(Object other) {

@@ -1,38 +1,28 @@
-import 'package:forms_project/domain/forms/objects/form_question_object.dart';
 
-class QuestionOptionObject {
-  final String id;
-  final int order;
-  final String? title;
-  final String? description;
-  final String? fileUrl;
-  final String? mimeType;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  QuestionOptionObject({
-    required this.id,
-    required this.order,
-    this.title,
-    this.description,
-    this.fileUrl,
-    this.mimeType,
-  });
-  
-  QuestionOptionObject copyWith({
-     String? id,
-     int? order,
-     String? title,
-     String? description,
-     String? fileUrl,
-     String? mimeType,
-}) {
-    return QuestionOptionObject(
-        id: id ?? this.id,
-        order: order ?? this.order,
-      title: title ?? this.title,
-      description: description ?? this.description,
-      fileUrl: fileUrl ?? this.fileUrl,
-      mimeType: mimeType ?? this.mimeType,
-    );
-  }
-  
+part 'question_option_object.freezed.dart';
+
+@freezed
+abstract class QuestionOptionObject with _$QuestionOptionObject {
+  const QuestionOptionObject._();
+  const factory QuestionOptionObject({
+    required String id,
+    required int order,
+    @Default('') String title,
+    @Default('') String description,
+    String? fileUrl,
+    String? mimeType,
+  }) = _QuestionOptionObject;
+
+  factory QuestionOptionObject.empty() => const QuestionOptionObject(
+    id: '',
+    order: 0,
+    title: '',
+    description: '',
+    fileUrl: null,
+    mimeType: null,
+  );
 }
+  
+

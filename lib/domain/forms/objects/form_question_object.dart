@@ -1,59 +1,29 @@
 import 'package:forms_project/domain/core/_enums.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:forms_project/domain/forms/objects/question_option_object.dart';
 
-class FormQuestionObject {
-  final String id;
-  final String title;
-  final String? description;
-  final FormInputTypeEnum type;
-  final bool required;
-  final int order;
-  final List<QuestionOptionObject>? options;
+part 'form_question_object.freezed.dart';
 
-  FormQuestionObject({
-    required this.id,
-    required this.title,
-    this.description,
-    required this.type,
-    required this.required,
-    required this.order,
-    this.options,
-  });
+@freezed
+abstract class FormQuestionObject with _$FormQuestionObject {
 
-  FormQuestionObject copyWith({
-    String? id,
-    String? title,
-    String? description,
-    FormInputTypeEnum? type,
-    bool? required,
-    int? order,
+  const factory FormQuestionObject({
+    required String id,
+    required String title,
+    @Default('') String description,
+    required FormInputTypeEnum type,
+    required bool required,
+    required int order,
     List<QuestionOptionObject>? options,
-  }) {
-    return FormQuestionObject(
-      id: id ?? this.id,
-      title: title ?? this.id,
-      description: description ?? this.description,
-      type: type ?? this.type,
-      required: required ?? this.required,
-      order: order ?? this.order,
-      options: options ?? this.options,
-    );
-  }
+  }) = _FormQuestionObject;
 
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      title.hashCode ^
-      description.hashCode ^
-      type.hashCode ^
-      required.hashCode ^
-      order.hashCode ^
-      options.hashCode;
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is FormQuestionObject && other.hashCode == hashCode;
-  }
-
+  factory FormQuestionObject.empty() => FormQuestionObject(
+    id: '',
+    title: '',
+    description: '',
+    type: FormInputTypeEnum.shortText,
+    required: false,
+    order: 0,
+    options: null,
+  );
 }

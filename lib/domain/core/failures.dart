@@ -1,12 +1,26 @@
-abstract class Failure<T> {}
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:kt_dart/collection.dart';
 
-class ValidationFailure<T> implements Failure<T> {
-  final String message;
-  ValidationFailure({required this.message});
+part 'failures.freezed.dart';
+
+@freezed
+abstract class ValueFailure<T> with _$ValueFailure<T> {
+  const factory ValueFailure.empty({
+    required T failedValue}) = Empty<T>;
+
+  const factory ValueFailure.exceedingLength({
+    required T failedValue,
+    required int max,
+  }) = ExceedingLength<T>;
+
+  const factory ValueFailure.futureDate({required T failedValue}) =
+      FutureDate<T>;
+
+  const factory ValueFailure.invalidDate({required T failedValue}) =
+      InvalidDate<T>;
+
+  const factory ValueFailure.listTooLong({
+    required KtList failedValue,
+    required int max,
+  }) = ListTooLong;
 }
-
-class RepositoryFailure<T> implements Failure<T> {
-  final String message;
-  RepositoryFailure({required this.message});
-}
-
