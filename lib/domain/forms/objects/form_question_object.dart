@@ -6,6 +6,7 @@ part 'form_question_object.freezed.dart';
 
 @freezed
 abstract class FormQuestionObject with _$FormQuestionObject {
+  const FormQuestionObject._();
 
   const factory FormQuestionObject({
     required String id,

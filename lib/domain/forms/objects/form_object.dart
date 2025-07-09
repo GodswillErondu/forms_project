@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:forms_project/domain/forms/objects/form_question_object.dart';
 
@@ -6,6 +5,8 @@ part 'form_object.freezed.dart';
 
 @freezed
 abstract class FormObject with _$FormObject {
+  const FormObject._();
+
   const factory FormObject({
     required String id,
     required String author,
@@ -24,7 +25,7 @@ abstract class FormObject with _$FormObject {
     required List<FormQuestionObject> questions,
   }) = _FormObject;
 
-  factory FormObject.empty() =>  FormObject(
+  factory FormObject.empty() => FormObject(
     id: '',
     author: '',
     to: [],

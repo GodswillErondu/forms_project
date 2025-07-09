@@ -1,4 +1,3 @@
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'question_option_object.freezed.dart';
@@ -6,6 +5,7 @@ part 'question_option_object.freezed.dart';
 @freezed
 abstract class QuestionOptionObject with _$QuestionOptionObject {
   const QuestionOptionObject._();
+
   const factory QuestionOptionObject({
     required String id,
     required int order,
@@ -24,5 +24,3 @@ abstract class QuestionOptionObject with _$QuestionOptionObject {
     mimeType: null,
   );
 }
-  
-

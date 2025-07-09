@@ -20,9 +20,7 @@ Either<ValueFailure<String>, String> validateTitle(
   }
 }
 
-Either<ValueFailure<DateTime>, DateTime> validateDate(
-    DateTime input
-    ) {
+Either<ValueFailure<DateTime>, DateTime> validateDate(DateTime input) {
   if (input.isBefore(DateTime.now())) {
     return right(input);
   } else {
