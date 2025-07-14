@@ -1,0 +1,179 @@
+{
+"id": "form_001",
+"author": "hr@company.com",
+"to": [
+"newhire@example.com"
+],
+"title": "New Employee Onboarding Form",
+"subtitle": "Please fill out your details for HR records",
+"description": "This form helps us get to know you and ensure a smooth onboarding process. Required questions are marked.",
+"dateCreated": "2025-06-25T09:00:00Z",
+"dateModified": "2025-06-25T10:00:00Z",
+"isPublished": true,
+"thumbnailUrl": "https://images.ctfassets.net/hrltx12pl8hq/7JnR6tVVwDyUM8Cbci3GtJ/bf74366cff2ba271471725d0b0ef418c/shutterstock_376532611-og.jpg",
+"themeColorHex": "#6d798b",
+"backgroundColorHex": "#bfa39e",
+"titleColorHex": "#1e2b31",
+"maxQuestionsToAnswer": null,
+"questions": [
+{
+"id": "q1",
+"title": "Full Name",
+"description": "As it appears on your official documents",
+"type": "shortText",
+"required": true,
+"order": 1,
+"options": null
+},
+{
+"id": "q2",
+"title": "Brief Introduction",
+"description": "Tell us a little about yourself",
+"type": "longText",
+"required": false,
+"order": 2,
+"options": null
+},
+{
+"id": "q3",
+"title": "Date of Birth",
+"description": null,
+"type": "date",
+"required": true,
+"order": 3,
+"options": null
+},
+{
+"id": "q4",
+"title": "Preferred Start Time",
+"description": "What time of the day are you most productive?",
+"type": "time",
+"required": false,
+"order": 4,
+"options": null
+},
+{
+"id": "q5",
+"title": "Department",
+"description": "Choose the department you'll be joining",
+"type": "dropdown",
+"required": true,
+"order": 5,
+"options": [
+{
+"id": "opt1",
+"order": 1,
+"title": "Engineering"
+},
+{
+"id": "opt2",
+"order": 2,
+"title": "Marketing"
+},
+{
+"id": "opt3",
+"order": 3,
+"title": "Product"
+},
+{
+"id": "opt4",
+"order": 4,
+"title": "Finance"
+}
+]
+},
+{
+"id": "q6",
+"title": "Tools You Use Frequently",
+"description": "Select all that apply",
+"type": "multipleChoice",
+"required": false,
+"order": 6,
+"options": [
+{
+"id": "opt1",
+"order": 1,
+"title": "Slack"
+},
+{
+"id": "opt2",
+"order": 2,
+"title": "Jira"
+},
+{
+"id": "opt3",
+"order": 3,
+"title": "Figma"
+},
+{
+"id": "opt4",
+"order": 4,
+"title": "Zoom"
+}
+]
+},
+{
+"id": "q7",
+"title": "Work Preference",
+"description": "Choose one that fits you best",
+"type": "singleChoice",
+"required": true,
+"order": 7,
+"options": [
+{
+"id": "opt1",
+"order": 1,
+"title": "Remote"
+},
+{
+"id": "opt2",
+"order": 2,
+"title": "Hybrid"
+},
+{
+"id": "opt3",
+"order": 3,
+"title": "On-site"
+}
+]
+},
+{
+"id": "q8",
+"title": "Rate Your Comfort With Tech Tools",
+"description": "From 1 (Not Comfortable) to 5 (Very Comfortable)",
+"type": "slider",
+"required": true,
+"order": 8,
+"options": [
+{
+"id": "min",
+"order": 1,
+"title": "1"
+},
+{
+"id": "max",
+"order": 2,
+"title": "5"
+}
+]
+},
+{
+"id": "q10",
+"title": "Vacation Window",
+"description": "Select your preferred vacation dates for this year",
+"type": "dateRange",
+"required": false,
+"order": 9,
+"options": null
+},
+{
+"id": "q9",
+"title": "Upload a Recent Photo",
+"description": "This will be used for your ID badge",
+"type": "fileUpload",
+"required": true,
+"order": 10,
+"options": null
+}
+]
+}
