@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:forms_project/infrastructure/forms/dtos/form_dto.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import 'infrastructure/form/dtos/form_dto.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

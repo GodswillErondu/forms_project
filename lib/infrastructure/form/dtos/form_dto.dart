@@ -1,5 +1,5 @@
 import 'package:forms_project/domain/forms/objects/form_object.dart';
-import 'package:forms_project/infrastructure/forms/dtos/form_question_dto.dart';
+import 'form_question_dto.dart';
 
 class FormDto {
   final String id;

@@ -1,6 +1,6 @@
 import 'package:forms_project/domain/core/_enums.dart';
 import 'package:forms_project/domain/forms/objects/form_question_object.dart';
-import 'package:forms_project/infrastructure/forms/dtos/question_option_dto.dart';
+import 'package:forms_project/infrastructure/form/dtos/question_option_dto.dart';
 
 class FormQuestionDto {
   final String id;
