@@ -1,6 +1,7 @@
 import 'package:forms_project/domain/core/_enums.dart';
-import 'package:forms_project/domain/forms/objects/form_question_object.dart';
+import 'package:forms_project/domain/form/objects/form_question_object.dart';
 import 'package:forms_project/infrastructure/form/dtos/question_option_dto.dart';
+import 'package:hive/hive.dart';
 
 class FormQuestionDto {
   final String id;
@@ -57,8 +58,8 @@ class FormQuestionDto {
       required: json['required'] as bool,
       order: json['order'] as int,
       options: json['options'] != null
-          ? (json['options'] as List)
-          .map((e) => QuestionOptionDto.fromJson(e as Map<String, dynamic>))
+          ? List<Map<String, dynamic>>.from(json['options'])
+          .map(QuestionOptionDto.fromJson)
           .toList()
           : null,
     );
@@ -79,4 +80,33 @@ class FormQuestionDto {
   @override
   String toString() => 'FormQuestionDto(id: $id, title: $title, type: $type)';
 
+}
+
+class FormQuestionDtoAdapter extends TypeAdapter<FormQuestionDto> {
+  @override
+  final int typeId = 5;
+
+  @override
+  FormQuestionDto read(BinaryReader reader) {
+    return FormQuestionDto(
+      id: reader.readString(),
+      title: reader.readString(),
+      description: reader.readString(),
+      type: reader.read() as FormInputTypeEnum,
+      required: reader.readBool(),
+      order: reader.readInt(),
+      options: reader.readList().cast<QuestionOptionDto>(),
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, FormQuestionDto obj) {
+    writer.writeString(obj.id);
+    writer.writeString(obj.title);
+    writer.writeString(obj.description);
+    writer.write(obj.type); 
+    writer.writeBool(obj.required);
+    writer.writeInt(obj.order);
+    writer.writeList(obj.options ?? []);
+  }
 }

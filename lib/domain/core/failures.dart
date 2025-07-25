@@ -5,12 +5,26 @@ part 'failures.freezed.dart';
 
 @freezed
 abstract class ValueFailure<T> with _$ValueFailure<T> {
-  const factory ValueFailure.empty({required T failedValue}) = Empty<T>;
+
+  const factory ValueFailure.empty({
+    required T failedValue
+  }) = Empty<T>;
+
+
+  const factory ValueFailure.tooLong({
+    required T failedValue,
+    required int max,
+  }) = TooLong<T>;
+
+  const factory ValueFailure.invalidFormat({
+    required T failedValue
+  }) = InvalidFormat<T>;
 
   const factory ValueFailure.exceedingLength({
     required T failedValue,
     required int max,
   }) = ExceedingLength<T>;
+
 
   const factory ValueFailure.futureDate({required T failedValue}) =
       FutureDate<T>;

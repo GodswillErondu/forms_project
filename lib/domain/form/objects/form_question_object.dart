@@ -1,6 +1,6 @@
 import 'package:forms_project/domain/core/_enums.dart';
+import 'package:forms_project/domain/form/objects/question_option_object.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:forms_project/domain/forms/objects/question_option_object.dart';
 
 part 'form_question_object.freezed.dart';
 

@@ -1,16 +1,11 @@
 import 'package:dartz/dartz.dart';
-import 'package:kt_dart/collection.dart';
 
-import 'errors.dart';
 import 'failures.dart';
 
-Either<ValueFailure<String>, String> validateTitle(
-  String input,
-  int maxLength,
-) {
-  if (input.isEmpty) {
-    return left(ValueFailure.empty(failedValue: input));
-  }
+Either<ValueFailure<String>, String> validateMaxStringLength(
+    String input,
+    int maxLength,
+    ) {
   if (input.length <= maxLength) {
     return right(input);
   } else {
@@ -20,22 +15,12 @@ Either<ValueFailure<String>, String> validateTitle(
   }
 }
 
-Either<ValueFailure<DateTime>, DateTime> validateDate(DateTime input) {
-  if (input.isBefore(DateTime.now())) {
+Either<ValueFailure<String>, String> validateStringNotEmpty(String input) {
+  if (input.isNotEmpty) {
     return right(input);
   } else {
-    return left(ValueFailure.futureDate(failedValue: input));
+    return left(ValueFailure.empty(failedValue: input));
   }
 }
 
-Either<ValueFailure<KtList<T>>, KtList<T>> validateMaxListLength<T>(
-  KtList<T> input,
-  int maxLength,
-) {
-  if (input.size <= maxLength) {
-    return right(input);
-  } else {
-    // Simplified approach
-    return left(ValueFailure.listTooLong(failedValue: input, max: maxLength));
-  }
-}
+

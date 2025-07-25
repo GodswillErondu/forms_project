@@ -1,80 +1,127 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dartz/dartz.dart';
-import 'package:forms_project/domain/forms/objects/form_failure.dart';
-import 'package:forms_project/domain/forms/objects/form_object.dart';
-import 'package:forms_project/domain/forms/objects/i_form_repository.dart';
+import 'package:forms_project/domain/form/objects/form_failure.dart';
+import 'package:forms_project/domain/form/objects/form_object.dart';
+import 'package:forms_project/domain/form/repositories/i_form_repository.dart';
+import 'package:forms_project/domain/form/objects/value_objects.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 
 part 'form_event.dart';
+
 part 'form_state.dart';
+
 part 'form_bloc.freezed.dart';
 
+@injectable
 class FormBloc extends Bloc<FormEvent, FormState> {
   final IFormRepository formRepository;
 
-  FormBloc({required this.formRepository}) : super(const FormState.initial()) {
-    on<_FormCreateRequested>(_onCreateRequested);
-    on<_FormUpdateRequested>(_onUpdateRequested);
-    on<_FormDeleteRequested>(_onDeleteRequested);
+  FormBloc(this.formRepository) : super(FormState.initial()) {
+    on<FormTextChanged>(_onFormTextChanged);
+    on<FormTextSaved>(_onFormTextSaved);
+    on<FormTextDeleted>(_onFormTextDeleted);
+    on<FormSampleDataLoaded>(_onFormSampleDataLoaded);
+    on<FormSavedTextLoaded>(_onFormSavedTextLoaded);
   }
 
-  Future<void> _onCreateRequested(_FormCreateRequested event,
-      Emitter<FormState> emit,) async {
-    emit(const FormState.actionInProgress());
-
-    try {
-      final result = await formRepository.create(event.form);
-
-      if (!emit.isDone) {
-        emit(_handleOperationResult(result, 'Form created successfully'));
-      }
-    } catch (e) {
-      if (!emit.isDone) {
-        emit(FormState.failure(FormFailure.unexpected()));
-      }
-    }
-  }
-
-  Future<void> _onUpdateRequested(_FormUpdateRequested event,
-      Emitter<FormState> emit,) async {
-    emit(const FormState.actionInProgress());
-
-    try {
-      final result = await formRepository.update(event.form);
-
-      if (!emit.isDone) {
-        emit(_handleOperationResult(result, 'Form updated successfully'));
-      }
-    } catch (e) {
-      if (!emit.isDone) {
-        emit(FormState.failure(FormFailure.unexpected()));
-      }
-    }
-  }
-
-  Future<void> _onDeleteRequested(_FormDeleteRequested event,
-      Emitter<FormState> emit,) async {
-    emit(const FormState.actionInProgress());
-
-    try {
-      final result = await formRepository.delete(event.form);
-
-      if (!emit.isDone) {
-        emit(_handleOperationResult(result, 'Form deleted successfully'));
-      }
-    } catch (e) {
-      if (!emit.isDone) {
-        emit(FormState.failure(FormFailure.unexpected()));
-      }
-    }
-  }
-
-  FormState _handleOperationResult(Either<FormFailure, Unit> result,
-      String successMessage,) {
-    return result.fold(
-          (failure) => FormState.failure(failure),
-          (_) => FormState.success('successful'),
+  void _onFormTextChanged(FormTextChanged event, Emitter<FormState> emit) {
+    emit(
+      state.copyWith(
+        title: FormTitle(event.text),
+        saveFailureOrSuccessOption: none(),
+      ),
     );
   }
 
+  Future<void> _onFormTextSaved(
+    FormTextSaved event,
+    Emitter<FormState> emit,
+  ) async {
+    emit(state.copyWith(
+        isSaving: true,
+        saveFailureOrSuccessOption: none()));
+
+    final form = FormObject.empty().copyWith(
+        title: state.title.getOrCrash());
+
+    final failureOrSuccess = await formRepository.create(form);
+
+    emit(
+      state.copyWith(
+        isSaving: false,
+        saveFailureOrSuccessOption: some(failureOrSuccess),
+        shouldClearText: failureOrSuccess.isRight(),
+        title: failureOrSuccess.fold(
+          (failure) => state.title,
+          (_) => FormTitle(''),
+        ),
+      ),
+    );
+
+    failureOrSuccess.fold(
+      (failure) {},
+      (_) => add(const FormEvent.formLoadSavedText()),
+    );
+  }
+
+  Future<void> _onFormTextDeleted(
+    FormTextDeleted event,
+    Emitter<FormState> emit,
+  ) async {
+    emit(state.copyWith(isLoading: true));
+
+    final failureOrSuccess = await formRepository.delete(event.id);
+
+    emit(
+      state.copyWith(
+        isLoading: false,
+        saveFailureOrSuccessOption: some(failureOrSuccess),
+      ),
+    );
+  }
+
+  Future<void> _onFormSampleDataLoaded(
+    FormSampleDataLoaded event,
+    Emitter<FormState> emit,
+  ) async {
+    emit(state.copyWith(isLoading: true));
+
+    final failureOrSuccess = await formRepository.loadSampleData();
+
+    emit(
+      state.copyWith(
+        isLoading: false,
+        saveFailureOrSuccessOption: some(failureOrSuccess),
+      ),
+    );
+
+    failureOrSuccess.fold(
+      (failure) {},
+      (_) => add(const FormEvent.formLoadSavedText()),
+    );
+  }
+
+  Future<void> _onFormSavedTextLoaded(
+    FormSavedTextLoaded event,
+    Emitter<FormState> emit,
+  ) async {
+    emit(state.copyWith(
+        isLoading: true,));
+
+    final failureOrForms = await formRepository.getSavedForms();
+
+    emit(
+      failureOrForms.fold(
+        (failure) => state.copyWith(
+          isLoading: false,
+          saveFailureOrSuccessOption: some(left(failure)),
+        ),
+        (forms) => state.copyWith(
+          isLoading: false,
+          saveFailureOrSuccessOption: some(right(unit)),
+        ),
+      ),
+    );
+  }
 }

@@ -1,4 +1,6 @@
-import 'package:forms_project/domain/forms/objects/form_object.dart';
+import 'package:forms_project/domain/form/objects/form_object.dart';
+import 'package:hive/hive.dart';
+
 import 'form_question_dto.dart';
 
 class FormDto {
@@ -16,7 +18,7 @@ class FormDto {
   final String backgroundColorHex;
   final String titleColorHex;
   final int? maxQuestionsToAnswer;
-  final List<FormQuestionDto> questions;
+  // final List<FormQuestionDto> questions;
 
   const FormDto({
     required this.id,
@@ -33,7 +35,7 @@ class FormDto {
     required this.backgroundColorHex,
     required this.titleColorHex,
     this.maxQuestionsToAnswer,
-    required this.questions,
+    // required this.questions,
   });
 
   factory FormDto.fromDomain(FormObject formObject) {
@@ -52,7 +54,7 @@ class FormDto {
       backgroundColorHex: formObject.backgroundColorHex,
       titleColorHex: formObject.titleColorHex,
       maxQuestionsToAnswer: formObject.maxQuestionsToAnswer,
-      questions: formObject.questions.map(FormQuestionDto.fromDomain).toList(),
+      // questions: formObject.questions.map(FormQuestionDto.fromDomain).toList(),
     );
   }
 
@@ -72,7 +74,7 @@ class FormDto {
       backgroundColorHex: backgroundColorHex,
       titleColorHex: titleColorHex,
       maxQuestionsToAnswer: maxQuestionsToAnswer,
-      questions: questions.map((dto) => dto.toDomain()).toList(),
+      // questions: questions.map((dto) => dto.toDomain()).toList(),
     );
   }
 
@@ -92,9 +94,9 @@ class FormDto {
       backgroundColorHex: json['backgroundColorHex'] as String,
       titleColorHex: json['titleColorHex'] as String,
       maxQuestionsToAnswer: json['maxQuestionsToAnswer'] as int?,
-      questions: (json['questions'] as List)
-          .map((e) => FormQuestionDto.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      // questions: (json['questions'] as List)
+      //     .map((e) => FormQuestionDto.fromJson(e as Map<String, dynamic>))
+      //     .toList(),
     );
   }
 
@@ -114,7 +116,7 @@ class FormDto {
       'backgroundColorHex': backgroundColorHex,
       'titleColorHex': titleColorHex,
       'maxQuestionsToAnswer': maxQuestionsToAnswer,
-      'questions': questions.map((q) => q.toJson()).toList(),
+      // 'questions': questions.map((q) => q.toJson()).toList(),
     };
   }
 
@@ -122,6 +124,61 @@ class FormDto {
   String toString() => 'FormObjectDto('
       'id: $id, '
       'title: $title, '
-      'questions: ${questions.length} items'
+      // 'questions: ${questions.length} items'
       ')';
+}
+
+class FormDtoAdapter extends TypeAdapter<FormDto> {
+  @override
+  final int typeId = 10;
+
+  @override
+  FormDto read(BinaryReader reader) {
+    return FormDto(
+      id: reader.readString(),
+      author: reader.readString(),
+      to: reader.readList().cast<String>(),
+      title: reader.readString(),
+      subtitle: reader.readString(),
+      description: reader.readString(),
+      dateCreated: DateTime.fromMillisecondsSinceEpoch(reader.readInt()),
+      dateModified: DateTime.fromMillisecondsSinceEpoch(reader.readInt()),
+      isPublished: reader.readBool(),
+      thumbnailUrl: reader.readBool() ? reader.readString() : null,
+      themeColorHex: reader.readString(),
+      backgroundColorHex: reader.readString(),
+      titleColorHex: reader.readString(),
+      maxQuestionsToAnswer: reader.readBool() ? reader.readInt() : null,
+      // questions: reader.readList().cast<FormQuestionDto>(),
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, FormDto obj) {
+    writer.writeString(obj.id);
+    writer.writeString(obj.author);
+    writer.writeList(obj.to);
+    writer.writeString(obj.title);
+    writer.writeString(obj.subtitle);
+    writer.writeString(obj.description);
+    writer.writeInt(obj.dateCreated.millisecondsSinceEpoch);
+    writer.writeInt(obj.dateModified.millisecondsSinceEpoch);
+    writer.writeBool(obj.isPublished);
+    if (obj.thumbnailUrl != null) {
+      writer.writeBool(true);
+      writer.writeString(obj.thumbnailUrl!);
+    } else {
+      writer.writeBool(false);
+    }
+    writer.writeString(obj.themeColorHex);
+    writer.writeString(obj.backgroundColorHex);
+    writer.writeString(obj.titleColorHex);
+    if (obj.maxQuestionsToAnswer != null) {
+      writer.writeBool(true);
+      writer.writeInt(obj.maxQuestionsToAnswer!);
+    } else {
+      writer.writeBool(false);
+    }
+    // writer.writeList(obj.questions);
+  }
 }

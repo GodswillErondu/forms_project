@@ -1,4 +1,6 @@
-import 'package:forms_project/domain/forms/objects/question_option_object.dart';
+
+import 'package:forms_project/domain/form/objects/question_option_object.dart';
+import 'package:hive/hive.dart';
 
 class QuestionOptionDto {
   final String id;
@@ -65,4 +67,43 @@ class QuestionOptionDto {
   String toString() => 'QuestionOptionDto(id: $id, title: $title)';
 
 
+}
+
+class QuestionOptionDtoAdapter extends TypeAdapter<QuestionOptionDto> {
+  @override
+  final int typeId = 4; // ✅ Make sure this ID is unique across your entire app
+
+  @override
+  QuestionOptionDto read(BinaryReader reader) {
+    return QuestionOptionDto(
+      id: reader.readString(),
+      order: reader.readInt(),
+      title: reader.readString(),
+      description: reader.readString(),
+      fileUrl: reader.readBool() ? reader.readString() : null,
+      mimeType: reader.readBool() ? reader.readString() : null,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, QuestionOptionDto obj) {
+    writer.writeString(obj.id);
+    writer.writeInt(obj.order);
+    writer.writeString(obj.title);
+    writer.writeString(obj.description);
+
+    if (obj.fileUrl != null) {
+      writer.writeBool(true);
+      writer.writeString(obj.fileUrl!);
+    } else {
+      writer.writeBool(false);
+    }
+
+    if (obj.mimeType != null) {
+      writer.writeBool(true);
+      writer.writeString(obj.mimeType!);
+    } else {
+      writer.writeBool(false);
+    }
+  }
 }

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:forms_project/domain/forms/objects/form_question_object.dart';
+import 'form_question_object.dart';
 
 part 'form_object.freezed.dart';
 
@@ -22,24 +22,25 @@ abstract class FormObject with _$FormObject {
     required String backgroundColorHex,
     required String titleColorHex,
     int? maxQuestionsToAnswer,
-    required List<FormQuestionObject> questions,
+    // required List<FormQuestionObject> questions,
   }) = _FormObject;
 
-  factory FormObject.empty() => FormObject(
-    id: '',
-    author: '',
-    to: [],
-    title: '',
-    subtitle: '',
-    description: '',
-    dateCreated: DateTime.now(),
-    dateModified: DateTime.now(),
-    isPublished: false,
-    thumbnailUrl: null,
-    themeColorHex: '#FFFFFF',
-    backgroundColorHex: '#FFFFFF',
-    titleColorHex: '#000000',
-    maxQuestionsToAnswer: null,
-    questions: [],
-  );
+  factory FormObject.empty() =>
+      FormObject(
+        id: '',
+        author: '',
+        to: [],
+        title: '',
+        subtitle: '',
+        description: '',
+        dateCreated: DateTime.now(),
+        dateModified: DateTime.now(),
+        isPublished: false,
+        thumbnailUrl: null,
+        themeColorHex: '#FFFFFF',
+        backgroundColorHex: '#FFFFFF',
+        titleColorHex: '#000000',
+        maxQuestionsToAnswer: null,
+        // questions: [],
+      );
 }
